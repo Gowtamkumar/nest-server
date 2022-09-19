@@ -7,8 +7,8 @@ export class UserController{
   constructor(private readonly userService: UserService){}
 
   @Get('/')
-  GetUser(){
-    const users = this.userService.GetUsers();
+  GetUser(userDto){
+    const users = this.userService.GetUsers(userDto);
     return{
       data: users
     }

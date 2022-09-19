@@ -12,11 +12,10 @@ import { UserModule } from './modules/admin/User/User.module';
       port: 5432,
       username: 'postgres',
       password: '101',
-      database: 'bootcamp',
+      database: 'nest_server',
       synchronize: true,
     }),
     UserModule
-
   ],
   controllers: [AppController],
   providers: [AppService],

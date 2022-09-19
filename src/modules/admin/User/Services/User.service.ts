@@ -10,7 +10,8 @@ export class UserService {
     readonly userRepo: Repository<UserEntity>
   ) { }
 
-  GetUsers(){
-    return "Gets all users"
+  GetUsers(userDto){
+    const user = this.userRepo.create(userDto)
+    return this.userRepo.save(user)
   }
 }
