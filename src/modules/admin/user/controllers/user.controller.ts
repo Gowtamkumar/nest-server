@@ -4,6 +4,7 @@ import { UserService } from '../services/user.service';
 import { Body, Controller, Delete, Get, Logger, Param, ParseUUIDPipe, Patch, Post, Put, Query } from "@nestjs/common";
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UpdatePasswordDto } from '../dtos/update-password.dto';
+import { UserEntity } from '../entities/user.entity';
 
 
 @Controller('users')
@@ -18,7 +19,7 @@ export class UserController {
   @Get('/')
   async getUsers(
     @Query() filterUserDto: FilterUserDto
-  ) {
+  )   {
 
     const users = await this.userService.getUsers(filterUserDto)
 
