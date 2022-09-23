@@ -1,12 +1,13 @@
 import { FilterUserDto } from '../dtos/filter-user.dto';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UserService } from '../services/user.service';
-import { Body, Controller, Delete, Get, Logger, Param, ParseUUIDPipe, Patch, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Logger, Param, ParseUUIDPipe, Patch, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UpdatePasswordDto } from '../dtos/update-password.dto';
 import { UserEntity } from '../entities/user.entity';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 
-
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
   private logger = new Logger(UserController.name);

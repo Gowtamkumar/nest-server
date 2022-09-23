@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import * as bcrypt from 'bcrypt';
@@ -8,7 +8,6 @@ import { UserEntity } from '../entities/user.entity';
 
 @Injectable()
 export class UserService {
-  // private logger = new Logger(UserService.name);
 
   constructor(
     @InjectRepository(UserEntity)
@@ -16,8 +15,7 @@ export class UserService {
   ) { }
 
   getUsers(filterUserDto: FilterUserDto): Promise<UserEntity[]> {
-    // this.logger.log(`${this.getUsers.name}Service Called`);
-    const { name, username, roles, status } = filterUserDto;
+    const { name, username,status } = filterUserDto;
 
     let newQuery: any = {}
 
@@ -31,7 +29,6 @@ export class UserService {
   }
 
   async getUser(id: string): Promise<UserEntity> {
-    // this.logger.log(`${this.getUser.name}Service Called`);
 
     const user = await this.userRepo.findOne({ where: { id } });
     if (!user) {
@@ -50,9 +47,6 @@ export class UserService {
 
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
-    // this.logger.log(`${this.createUser.name}Service Called`);
-    // return console.log("createUserDto", createUserDto);
-
     const hashPassword = await bcrypt.hash(createUserDto.password, 10);
     const user = this.userRepo.create({ ...createUserDto, password: hashPassword });
     await this.userRepo.save(user);
@@ -61,7 +55,6 @@ export class UserService {
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
-    // this.logger.log(`${this.updateUser.name}Service Called`);
     const user = await this.userRepo.findOne({ where: { id } })
 
     if (!user) {
@@ -72,8 +65,6 @@ export class UserService {
   }
 
   async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto): Promise<UserEntity> {
-    // this.logger.log(`${this.updatePassword.name}Service Called`);
-
     const { currentPassword, newPassword } = updatePasswordDto;
 
     const user = await this.userRepo.findOne({ where: { id } })
@@ -86,23 +77,18 @@ export class UserService {
     }
 
     user.password = await bcrypt.hash(newPassword, 10);
-
     return this.userRepo.save(user);
   }
 
   async resetPassword(id: string, password: string): Promise<UserEntity> {
-    // this.logger.log(`${this.resetPassword.name} Called`);
-
     const user = await this.getUser(id);
 
     user.password = await bcrypt.hash(password, 10);
-    // delete user.password;
     return this.userRepo.save(user);
   }
 
 
   async deleteUser(id: string): Promise<UserEntity> {
-    // this.logger.log(`${this.deleteUser.name}Service Called`);
 
     const user = await this.userRepo.findOne({ where: { id } })
     if (!user) {
@@ -111,10 +97,8 @@ export class UserService {
     return this.userRepo.remove(user);
   }
 
-  validateUser(user: UserEntity, password: string) {
-    // this.logger.log(`${this.validateUser.name} Called`);
+  validateUser(user: UserEntity, password: string): Promise<boolean> {
     return bcrypt.compare(password, user.password)
   }
-
 
 }
