@@ -1,12 +1,10 @@
 import { Body, Controller, Delete, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { Request, Response } from "express";
 import { UserDto } from "../../user/dtos/user.dto";
 import { CurrentUser } from "../decorators/current-user.decorator";
 import { LoginCredentialDto, RegisterCredentialDto } from "../dtos";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 import { AuthService } from "../services/auth.service";
-
 
 @Controller('auth')
 export class AuthController {
