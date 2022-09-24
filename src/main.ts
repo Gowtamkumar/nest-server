@@ -5,16 +5,12 @@ import * as cookieParser from 'cookie-parser'
 import getLogLevels from './Logger/logger';
 
 
-
 async function bootstrap() {
   const logger = new Logger('Bootstrap Logger');
-
 
   const app = await NestFactory.create(AppModule, {
     logger: getLogLevels(process.env.NODE_ENV === 'production')
   });
-
-  // console.log("ddd",process.env.NODE_ENV);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -30,10 +26,8 @@ async function bootstrap() {
   app.use(cookieParser());
 
   const PORT = 3900
-
-
   await app.listen(PORT, () => {
-    logger.log(`Application listening on port mode. http://localhost:3900`);
+    logger.log(`Application listening on port mode. http://localhost:${PORT}`);
   });
 }
 bootstrap();
