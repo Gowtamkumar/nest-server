@@ -10,17 +10,15 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
-  private logger = new Logger(UserController.name);
+  private readonly logger = new Logger(UserController.name);
+  
 
   constructor(
     private readonly userService: UserService
   ) { }
 
-
   @Get('/')
-  async getUsers(
-    @Query() filterUserDto: FilterUserDto
-  )   {
+  async getUsers(@Query() filterUserDto: FilterUserDto)   {
 
     const users = await this.userService.getUsers(filterUserDto)
 
