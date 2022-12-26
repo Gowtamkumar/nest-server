@@ -11,9 +11,9 @@ import { AdminModule } from './modules/admin/admin.module';
       isGlobal: true,
       envFilePath: ['.env.development.local', '.env.development'],
     }),
-    AdminModule
+    AdminModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

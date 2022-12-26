@@ -1,4 +1,4 @@
-import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export const TypeOrmConfig: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -9,4 +9,4 @@ export const TypeOrmConfig: TypeOrmModuleOptions = {
   database: 'arko',
   autoLoadEntities: true, // loading all entities
   synchronize: true,
-}
+};

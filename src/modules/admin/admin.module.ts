@@ -6,6 +6,6 @@ import { UserModule } from './user/user.module';
   imports: [UserModule, AuthModule],
   controllers: [],
   providers: [],
-  exports: []
+  exports: [],
 })
 export class AdminModule {}
