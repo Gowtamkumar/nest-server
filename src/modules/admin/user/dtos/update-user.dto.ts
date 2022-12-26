@@ -1,15 +1,21 @@
-import { Transform } from "class-transformer";
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
-import { UserRole } from "../enums/user-role.enum";
-import { UserStatus } from "../enums/user-status.enum";
+import { Transform } from 'class-transformer';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
+import { UserRole } from '../enums/user-role.enum';
+import { UserStatus } from '../enums/user-status.enum';
 
 export class UpdateUserDto {
-
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @Transform(({value}) => value || null)
+  @Transform(({ value }) => value || null)
   @IsEmail()
   @IsOptional()
   email: string;
@@ -19,10 +25,9 @@ export class UpdateUserDto {
   @Length(5, 20)
   username: string;
 
-  @IsEnum(UserRole, {each: true})
+  @IsEnum(UserRole, { each: true })
   roles: UserRole[];
 
   @IsEnum(UserStatus)
   status: UserStatus;
-
 }

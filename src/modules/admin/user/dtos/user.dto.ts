@@ -1,11 +1,9 @@
-import { Expose } from "class-transformer";
-import { IsEmail } from "class-validator";
-import { UserRole } from "../enums/user-role.enum";
-import { UserStatus } from "../enums/user-status.enum";
-
+import { Expose } from 'class-transformer';
+import { IsEmail } from 'class-validator';
+import { UserRole } from '../enums/user-role.enum';
+import { UserStatus } from '../enums/user-status.enum';
 
 export class UserDto {
-  
   @Expose()
   id: string;
 
@@ -13,7 +11,6 @@ export class UserDto {
   name: string;
 
   @Expose()
-  @IsEmail()
   email: string;
 
   @Expose()
@@ -27,5 +24,4 @@ export class UserDto {
 
   @Expose()
   status: UserStatus;
-
 }

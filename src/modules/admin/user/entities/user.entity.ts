@@ -1,5 +1,12 @@
 import { UserStatus } from '../enums/user-status.enum';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, AfterInsert, AfterUpdate, AfterRemove } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  AfterInsert,
+  AfterUpdate,
+  AfterRemove,
+} from 'typeorm';
 import { UserRole } from '../enums/user-role.enum';
 
 @Entity('users')
@@ -23,7 +30,12 @@ export class UserEntity {
   @Column({ default: false })
   isAdmin: boolean;
 
-  @Column({ type: 'enum', enum: UserRole, array: true, default: [UserRole.User] })
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    array: true,
+    default: [UserRole.User],
+  })
   roles: UserRole[];
 
   @Column({ type: 'enum', enum: UserStatus, default: UserStatus.Active })
@@ -31,24 +43,22 @@ export class UserEntity {
 
   // @CreateDateColumn({ type: "timestamptz" })
   // createdAt: Date;
-  
+
   // @UpdateDateColumn({ type: "timestamptz", onUpdate: "CURRENT_TIMESTAMP(6)"})
   // updatedAt: Date;
-  
 
   @AfterInsert()
-  logInsert(){
+  logInsert() {
     console.log(`Inserted User of id: ${this.id}`);
   }
 
   @AfterUpdate()
-  logUpdate(){
+  logUpdate() {
     console.log(`Updated User of id: ${this.id}`);
   }
 
   @AfterRemove()
-  logRemove(){
+  logRemove() {
     console.log(`User Removed`);
   }
-
 }

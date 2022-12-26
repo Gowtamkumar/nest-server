@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import getLogLevels from './Logger/logger';
+import { json } from 'express';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap Logger');
@@ -23,8 +24,9 @@ async function bootstrap() {
     credentials: true,
   });
   app.use(cookieParser());
+  app.use(json({ limit: '20mb' })); //this json data send size defiend
 
-  const PORT = 3900;
+  const PORT = process.env.API_PORT || 3900;
   await app.listen(PORT, () => {
     logger.log(`Application listening on port mode. http://localhost:${PORT}`);
   });

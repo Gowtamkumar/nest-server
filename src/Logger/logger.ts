@@ -1,4 +1,4 @@
-import { LogLevel } from "@nestjs/common";
+import { LogLevel } from '@nestjs/common';
 
 function getLogLevels(isProduction: boolean): LogLevel[] {
   if (isProduction) {
@@ -6,5 +6,5 @@ function getLogLevels(isProduction: boolean): LogLevel[] {
   }
   return ['error', 'warn', 'log', 'verbose', 'debug'];
 }
- 
+
 export default getLogLevels;

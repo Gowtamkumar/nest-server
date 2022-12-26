@@ -1,23 +1,32 @@
-import { Body, Controller, Delete, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
-import { Request, Response } from "express";
-import { UserDto } from "../../user/dtos/user.dto";
-import { CurrentUser } from "../decorators/current-user.decorator";
-import { LoginCredentialDto, RegisterCredentialDto } from "../dtos";
-import { JwtAuthGuard } from "../guards/jwt-auth.guard";
-import { AuthService } from "../services/auth.service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import { Request, Response } from 'express';
+import { UserDto } from '../../user/dtos/user.dto';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import { LoginCredentialDto, RegisterCredentialDto } from '../dtos';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { AuthService } from '../services/auth.service';
 
 @Controller('auth')
 export class AuthController {
-
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('/register')
-  async register(@Body() registerCredentialDto: RegisterCredentialDto,
-    @Res({ passthrough: true }) res: Response
+  async register(
+    @Body() registerCredentialDto: RegisterCredentialDto,
+    @Res({ passthrough: true }) res: Response,
   ) {
     const authPayload = await this.authService.register(registerCredentialDto);
     // set cookies token
-    this.cookiesBuildTokenResponsive(res, authPayload.token)
+    this.cookiesBuildTokenResponsive(res, authPayload.token);
 
     return {
       success: true,
@@ -30,16 +39,16 @@ export class AuthController {
   @Post('/login')
   async login(
     @Body() loginCredentialDto: LoginCredentialDto,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: Response,
   ) {
     const authPayload = await this.authService.login(loginCredentialDto);
     // set cookies token
-    this.cookiesBuildTokenResponsive(res, authPayload.token)
+    this.cookiesBuildTokenResponsive(res, authPayload.token);
 
     return {
       success: true,
       statusCode: 200,
-      message: `LOgin successfull`,
+      message: `Login successfull`,
       data: authPayload,
     };
   }
@@ -64,16 +73,21 @@ export class AuthController {
     return this.authService.getMe(user);
   }
 
-  private cookiesBuildTokenResponsive(res: Response, token: string) {
+  // private cookiesBuildTokenResponsive(response: Response, token: string) {
+  //   // this.logger.verbose(`Cookie Token Response`);
+  //   const cookieOptions = {
+  //     expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+  //     // secure: config.SSL && config.NODE_ENV===env_mode.PRODUCTION
+  //   };
+  //   response.status(200).cookie('token', token, cookieOptions);
+  // }
+
+  private cookiesBuildTokenResponsive(response: Response, token: string) {
     const cookiesOptions = {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
       // secure: config.SSL && config.NODE_ENV === env_mode.PRODUCTION
     };
 
-    return res
-      .status(200)
-      .cookie('token', token, cookiesOptions)
-      .cookie('accessToken', token, { ...cookiesOptions, httpOnly: true })
-      .send({ token, success: true, message: 'Login Successfull' });
+    return response.status(200).cookie('token', token, cookiesOptions);
   }
 }
