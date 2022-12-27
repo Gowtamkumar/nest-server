@@ -11,7 +11,6 @@ export class UserResponseDto {
   name: string;
 
   @Expose()
-  @IsEmail()
   email: string;
 
   @Expose()

@@ -57,7 +57,7 @@ export class AuthController {
   @Delete('/logout')
   logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     //revoke token
-    Object.entries(req.cookies).forEach(([key, value]) => res.clearCookie(key));
+    Object.entries(req.cookies).forEach(([key]) => res.clearCookie(key));
 
     return {
       success: true,
@@ -73,21 +73,10 @@ export class AuthController {
     return this.authService.getMe(user);
   }
 
-  // private cookiesBuildTokenResponsive(response: Response, token: string) {
-  //   // this.logger.verbose(`Cookie Token Response`);
-  //   const cookieOptions = {
-  //     expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-  //     // secure: config.SSL && config.NODE_ENV===env_mode.PRODUCTION
-  //   };
-  //   response.status(200).cookie('token', token, cookieOptions);
-  // }
-
   private cookiesBuildTokenResponsive(response: Response, token: string) {
     const cookiesOptions = {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      // secure: config.SSL && config.NODE_ENV === env_mode.PRODUCTION
     };
-
     return response.status(200).cookie('token', token, cookiesOptions);
   }
 }

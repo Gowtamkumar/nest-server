@@ -8,6 +8,7 @@ import { CreateUserDto } from '../../user/dtos/create-user.dto';
 import { UserDto } from '../../user/dtos/user.dto';
 import { UserService } from '../../user/services/user.service';
 import { LoginCredentialDto, RegisterCredentialDto } from '../dtos';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -55,7 +56,7 @@ export class AuthService {
     return user;
   }
 
-  private generatedSignedJwt(user) {
+  private generatedSignedJwt(user: UserEntity) {
     const jwtSignOptions: JwtSignOptions = {
       subject: user.id,
     };
