@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
@@ -12,12 +13,15 @@ import { UserEntity } from '../../user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
+  private logger = new Logger(AuthService.name);
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
   async register(registerCredentialDto: RegisterCredentialDto) {
+    this.logger.log(`${this.register.name} Service Called`);
+
     const { username } = registerCredentialDto;
     const find = await this.userService.findUserByUsername(username);
 
@@ -33,6 +37,8 @@ export class AuthService {
   }
 
   async login(loginCredentialsDto: LoginCredentialDto) {
+    this.logger.log(`${this.login.name} Service Called`);
+
     const { username, password } = loginCredentialsDto;
 
     const user = await this.userService.findUserByUsername(username);
@@ -44,6 +50,7 @@ export class AuthService {
     if (!valid) {
       throw new UnauthorizedException('Invalid Login Credentials');
     }
+
     const token = this.generatedSignedJwt(user);
 
     return {
@@ -53,6 +60,7 @@ export class AuthService {
   }
 
   async getMe(user: UserDto) {
+    this.logger.log(`${this.getMe.name} Service Called`);
     return user;
   }
 

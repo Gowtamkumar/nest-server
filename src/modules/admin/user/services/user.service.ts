@@ -114,7 +114,6 @@ export class UserService {
     this.logger.log(`${this.resetPassword.name} Service Called`);
 
     const user = await this.getUser(id);
-
     user.password = await bcrypt.hash(password, 10);
     return this.userRepo.save(user);
   }
