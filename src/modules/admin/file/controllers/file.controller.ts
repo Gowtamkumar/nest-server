@@ -2,10 +2,13 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
   HttpStatus,
   Logger,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseFilePipeBuilder,
   ParseUUIDPipe,
   Post,
@@ -82,7 +85,17 @@ export class FileController {
     }),
   )
   @Post('/upload')
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+  async uploadFile(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 4 }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
     const newFile = await this.filesService.createFile(file);
     console.log('file', file);
 
@@ -114,7 +127,14 @@ export class FileController {
     ),
   )
   uploadFiles(
-    @UploadedFiles()
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 4 }),
+        ],
+      }),
+    )
     files: {
       photo?: Express.Multer.File[];
       background?: Express.Multer.File[];
