@@ -19,7 +19,7 @@ import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UpdatePasswordDto } from '../dtos/update-password.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
   private readonly logger = new Logger(UserController.name);

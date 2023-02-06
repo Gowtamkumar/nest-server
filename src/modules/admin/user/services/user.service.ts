@@ -27,7 +27,6 @@ export class UserService {
   getUsers(filterUserDto: FilterUserDto): Promise<UserEntity[]> {
     this.logger.log(`${this.getUsers.name} Service Called`);
     const { name, username, status } = filterUserDto;
-
     const newQuery: any = {};
 
     if (name) newQuery.name = name;
@@ -57,7 +56,6 @@ export class UserService {
 
   async findUserByUsername(username: string) {
     this.logger.log(`${this.findUserByUsername.name} Service Called`);
-
     return this.userRepo.findOne({ where: { username } });
   }
 

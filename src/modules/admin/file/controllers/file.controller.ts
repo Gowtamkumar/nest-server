@@ -4,12 +4,10 @@ import {
   Delete,
   FileTypeValidator,
   Get,
-  HttpStatus,
   Logger,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
-  ParseFilePipeBuilder,
   ParseUUIDPipe,
   Post,
   Put,
@@ -27,6 +25,7 @@ import {
   FileInterceptor,
 } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { FilterFileDto } from '../dtos';
 
 @UseGuards(JwtAuthGuard)
 @Controller('files')
@@ -36,7 +35,7 @@ export class FileController {
   constructor(private readonly filesService: FilesService) {}
 
   @Get('/')
-  getFiles(filterFile: any) {
+  getFiles(filterFile: FilterFileDto) {
     const files = this.filesService.getFiles(filterFile);
 
     return {
@@ -78,8 +77,11 @@ export class FileController {
         destination: 'public/uploads',
         filename: (req, file, cb) => {
           const fileNameSplit = file.originalname.split('.');
+          console.log('fileNameSplit', fileNameSplit);
+
           const fileExt = fileNameSplit[fileNameSplit.length - 1];
-          cb(null, `${Date.now()}.${fileExt}`);
+          const justFileName = fileNameSplit[0];
+          cb(null, `${Date.now()}_${justFileName}.${fileExt}`);
         },
       }),
     }),

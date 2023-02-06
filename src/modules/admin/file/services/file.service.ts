@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FileEntity } from '../entitis/file.entity';
+import { CreateFileDto, FilterFileDto, UpdateFileDto } from '../dtos';
 
 @Injectable()
 export class FilesService {
@@ -12,8 +13,16 @@ export class FilesService {
     private readonly fileRepo: Repository<FileEntity>,
   ) {}
 
-  getFiles(filterFile: any) {
-    return this.fileRepo.find();
+  getFiles(filterFile: FilterFileDto): Promise<FileEntity[]> {
+    const { filename, originalname } = filterFile;
+
+    const newQuery: any = {};
+
+    if (filename) newQuery.filename = filename;
+    if (originalname) newQuery.originalname = originalname;
+    return this.fileRepo.find({
+      where: newQuery,
+    });
   }
 
   async getFile(id: string) {
@@ -27,14 +36,16 @@ export class FilesService {
     return file;
   }
 
-  async createFile(createFile: any) {
+  async createFile(createFile: CreateFileDto) {
     this.logger.log(`${this.createFile.name} service Called`);
+
+    console.log(createFile);
 
     const fileCreate = this.fileRepo.create(createFile);
     return this.fileRepo.save(fileCreate);
   }
 
-  async updateFile(id: string, updateFile: any) {
+  async updateFile(id: string, updateFile: UpdateFileDto) {
     this.logger.log(`${this.updateFile.name} Service Called`);
 
     const findFile = await this.fileRepo.findOne({ where: { id } });
